@@ -1,0 +1,380 @@
+{
+    "commands":[
+        {
+            "name":"Help",
+            "short": "?",
+            "tags":["All","Basic"],
+            "description":"Sends a link to a list of commands and provides details about a specific command.",
+            "parameters":["*Command"],
+            "usage":["h!help [command]","h!?[command]"],
+            "examples":["h!help","h!? help"]
+        },
+        {
+            "name":"Support",
+            "short": "sup",
+            "tags":["All","Basic"],
+            "description":"Shares a list of ways you can support HappleMan's Admin. Thanks!",
+            "parameters":["None"],
+            "usage":["h!support","h!sup"],
+            "examples":["h!support","h!sup"]
+        },
+        {
+            "name":"Version",
+            "short": "ver",
+            "tags":["All","Basic"],
+            "description":"Sends the version and most recent update of the bot.",
+            "parameters":["None"],
+            "usage":["h!version","h!ver"],
+            "examples":["h!version","h!ver"]
+        },
+        {
+            "name":"Invite",
+            "short": "inv",
+            "tags":["All","Basic"],
+            "description":"Sends an invite link for the bot, as well as an invite to the support server.",
+            "parameters":["None"],
+            "usage":["h!invite","h!inv"],
+            "examples":["h!invite","h!inv"]
+        },
+        {
+            "name":"Vote",
+            "short": "v",
+            "tags":["All","Basic"],
+            "description":"Sends a link to vote for the bot on top.gg. This does not grant any special privileges or boosts.",
+            "parameters":["None"],
+            "usage":["h!vote","h!v"],
+            "examples":["h!vote","h!v"]
+        },
+        {
+            "name":"Stats",
+            "short": "None",
+            "tags":["All","Basic"],
+            "description":"Shows the bot's current stats.",
+            "parameters":["None"],
+            "usage":["h!stats"],
+            "examples":["h!stats"]
+        },
+        {
+            "name":"Logs",
+            "short": "None",
+            "tags":["All","Moderation"],
+            "description":"Shows moderation logs from the server or for a specified user.",
+            "parameters":["*Member"],
+            "usage":["h!logs [@member]"],
+            "examples":["h!logs @HappleMan"]
+        },
+        {
+            "name":"Modlogs",
+            "short": "mlogs",
+            "tags":["All","Moderation"],
+            "description":"Shows moderation logs made by a specified user.",
+            "parameters":["Member"],
+            "usage":["h!modlogs [@member]","h!mlogs [@member]"],
+            "examples":["h!modlogs @HappleMan","h!mlogs @HappleMan","h!modlogs 485514940313239562"]
+        },
+        {
+            "name":"Warn",
+            "short": "None",
+            "tags":["All","Moderation"],
+            "description":"Warns a user for a specified reason.",
+            "parameters":["Member", "*Reason"],
+            "usage":["h!warn [@member] [reason]"],
+            "examples":["h!warn @HappleMan Being a bad programmer","h!warn 485514940313239562"]
+        },
+        {
+            "name":"Timeout",
+            "short": "mute",
+            "tags":["All","Moderation"],
+            "description":"Puts a member of the server in timeout.",
+            "parameters":["Member", "Time ([number][s,m,h,d])", "*Reason"],
+            "usage":["h!timeout [@member] [reason]","h!mute [@member] [reason]"],
+            "examples":["h!timeout @HappleMan 1h30m Being Annoying","h!mute @HappleMan Spamming","h!mute 485514940313239562"]
+        },
+        {
+            "name":"UnTimeout",
+            "short": "unmute",
+            "tags":["All","Moderation"],
+            "description":"Removes a member from timeout.",
+            "parameters":["Member"],
+            "usage":["h!untimeout [@member]","h!unmute [@member]"],
+            "examples":["h!untimeout @HappleMan","h!unmute @HappleMan","h!unmute 485514940313239562"]
+        },
+        {
+            "name":"Lockdown",
+            "short": "lock",
+            "tags":["All","Moderation", "Management"],
+            "description":"Lock low-ranking members out of sending messages in a channel.",
+            "parameters":["None"],
+            "usage":["h!lockdown","h!lock"],
+            "examples":["h!lockdown","h!lock"]
+        },
+        {
+            "name":"UnLockdown",
+            "short": "unlock",
+            "tags":["All","Moderation", "Management"],
+            "description":"Unlock a locked channel.",
+            "parameters":["None"],
+            "usage":["h!unlockdown","h!unlock"],
+            "examples":["h!unlockdown","h!unlock"]
+        },
+        {
+            "name":"Kick",
+            "short": "None",
+            "tags":["All","Moderation"],
+            "description":"Kicks a member from the server.",
+            "parameters":["Member", "Reason"],
+            "usage":["h!kick [@member] [reason]","h!kick [@member] [reason]"],
+            "examples":["h!kick @HappleMan Excessive tomfoolery","h!kick @HappleMan Abusing glitches","h!kick 485514940313239562"]
+        },
+        {
+            "name":"Ban",
+            "short": "None",
+            "tags":["All","Moderation"],
+            "description":"Bans a member from the server.",
+            "parameters":["Member", "Reason"],
+            "usage":["h!ban [@member] [reason]"],
+            "examples":["h!ban @HappleMan Not following the rules","h!ban 485514940313239562"]
+        },
+        {
+            "name":"CelebratoryBan",
+            "short": "cban",
+            "tags":["Secret"],
+            "description":"Bans a member from the server in a celebratory way.",
+            "parameters":["Member", "*Reason"],
+            "usage":["h!celebratoryban [@member] [reason]","h!cban [@member] [reason]"],
+            "examples":["h!celebratoryban @HappleMan Cya","h!cban 485514940313239562"]
+        },
+        {
+            "name":"Clear",
+            "short": "None",
+            "tags":["All","Moderation","Management"],
+            "description":"Clears a certain amount of messages.",
+            "parameters":["Number (1-100)"],
+            "usage":["h!clear [number]"],
+            "examples":["h!clear 12"]
+        },
+        {
+            "name":"ToggleStarboard",
+            "short": "sboard",
+            "tags":["All","Management"],
+            "description":"Toggles current channel being a starboard channel.",
+            "parameters":["None"],
+            "usage":["h!togglestarboard","h!sboard"],
+            "examples":["h!togglestarbpard","h!sboard"]
+        },
+        {
+            "name":"AutoRole",
+            "short": "arole",
+            "tags":["Deleted"],
+            "description":"Toggles a role being given out automatically.",
+            "parameters":["Role"],
+            "usage":["h!autorole [@role]","h!arole [@role]"],
+            "examples":["h!autorole @Members","h!arole @Guest"]
+        },
+        {
+            "name":"ReactionRoles",
+            "short": "rrole",
+            "tags":["All","Management"],
+            "description":"Creates a message that users can react to for roles.",
+            "parameters":["[Role, Emoji] (repeatable)","*Boolean"],
+            "usage":["h!reactionroles [@role] [:emoji:] [single]","h!rrole [@role] [:emoji:]"],
+            "examples":["h!reactionroles @Members :man: @Users :man_standing: true","h!rrole @Members :man: @Users :man_standing:"]
+        },
+        {
+            "name":"ToggleBlockLinks",
+            "short": "blocklinks",
+            "tags":["All","Moderation","Management"],
+            "description":"Deletes messages with links.",
+            "parameters":["None"],
+            "usage":["h!toggleblocklinks","h!blocklinks"],
+            "examples":["h!toggleblocklinks","h!blocklinks"]
+        },
+        {
+            "name":"ToggleBlockCaps",
+            "short": "blockcaps",
+            "tags":["All","Moderation","Management"],
+            "description":"Deletes messages with excessive caps.",
+            "parameters":["None"],
+            "usage":["h!toggleblockcaps","h!blockcaps"],
+            "examples":["h!toggleblockcaps","h!blockcaps"]
+        },
+        {
+            "name":"ToggleChatFilter",
+            "short": "chatfilter",
+            "tags":["All","Moderation","Management"],
+            "description":"Deletes messages with inappropriate language.",
+            "parameters":["None"],
+            "usage":["h!togglechatfilter","h!chatfilter"],
+            "examples":["h!togglechatfilter","h!chatfilter"]
+        },
+        {
+            "name":"ToggleJoinMessage",
+            "short": "None",
+            "tags":["Deleted"],
+            "description":"Toggles sending custom join messages.",
+            "parameters":["None"],
+            "usage":["h!togglejoinmessage"],
+            "examples":["h!togglejoinmessage"]
+        },
+        {
+            "name":"ToggleJoinDM",
+            "short": "None",
+            "tags":["Deleted"],
+            "description":"Toggles sending custom join DMs.",
+            "parameters":["None"],
+            "usage":["h!togglejoindm"],
+            "examples":["h!togglejoindm"]
+        },
+        {
+            "name":"ToggleLeaveMessage",
+            "short": "None",
+            "tags":["Deleted"],
+            "description":"Toggles sending custom leave messages.",
+            "parameters":["None"],
+            "usage":["h!toggleleavemessage"],
+            "examples":["h!toggleleavemessage"]
+        },
+        {
+            "name":"SetJoinMessage",
+            "short": "None",
+            "tags":["Deleted"],
+            "description":"Sets your server's custom join message. [user] for username and [guild] for server name.",
+            "parameters":["None"],
+            "usage":["h!setjoinmessage"],
+            "examples":["h!setjoinmessage"]
+        },
+        {
+            "name":"SetJoinDM",
+            "short": "None",
+            "tags":["Deleted"],
+            "description":"Sets your server's custom join DM. [user] for username and [guild] for server name.",
+            "parameters":["None"],
+            "usage":["h!setjoindm"],
+            "examples":["h!setjoindm"]
+        },
+        {
+            "name":"SetLeaveMessage",
+            "short": "None",
+            "tags":["Deleted"],
+            "description":"Sets your server's custom leave message. [user] for username and [guild] for server name.",
+            "parameters":["None"],
+            "usage":["h!setleavemessage"],
+            "examples":["h!setleavemessage"]
+        },
+        {
+            "name":"ToggleAutoPublish",
+            "short": "autopublish",
+            "tags":["All","Management"],
+            "description":"Toggles automatically publishing messages in announcement channels.",
+            "parameters":["None"],
+            "usage":["h!toggleautopublish","h!autopublish"],
+            "examples":["h!toggleautopublish","h!autopublish"]
+        },
+        {
+            "name":"ServerStats",
+            "short": "sstats",
+            "tags":["All","Management"],
+            "description":"Creates a category which shows member count, user count, and bot count.",
+            "parameters":["None"],
+            "usage":["h!serverstats","h!sstats"],
+            "examples":["h!serverstats","h!sstats"]
+        },
+        {
+            "name":"StartGiveaway",
+            "short": "giveaway",
+            "tags":["All","Fun"],
+            "description":"Starts a giveaway for a certain amount of time.",
+            "parameters":["Time ([number][s,m,h,d])","Name"],
+            "usage":["h!startgiveaway [time] [name]","h!giveaway [time] [name]"],
+            "examples":["h!startgiveaway 1d6h Discord Nitro","h!giveaway 10m V-Bucks"]
+        },
+        {
+            "name":"EndGiveaway",
+            "short": "end",
+            "tags":["All","Fun"],
+            "description":"Ends a giveaway early.",
+            "parameters":["None"],
+            "usage":["h!endgiveaway","h!end"],
+            "examples":["h!endgiveaway","h!end"]
+        },
+        {
+            "name":"CancelGiveaway",
+            "short": "cancel",
+            "tags":["All","Fun"],
+            "description":"Cancels a giveaway.",
+            "parameters":["None"],
+            "usage":["h!cancelgiveaway","h!cancel"],
+            "examples":["h!cancelgiveaway","h!cancel"]
+        },
+        {
+            "name":"RerollGiveaway",
+            "short": "reroll",
+            "tags":["All","Fun"],
+            "description":"Rerolls a new winner for the most recent ended giveaway.",
+            "parameters":["None"],
+            "usage":["h!rerollgiveaway","h!reroll"],
+            "examples":["h!rerollgiveaway","h!reroll"]
+        },
+        {
+            "name":"TicketPrompt",
+            "short": "tickets",
+            "tags":["All","Management"],
+            "description":"Creates a prompt for users to create tickets",
+            "parameters":["*Role"],
+            "usage":["h!ticketprompt [role]", "h!tickets [role]"],
+            "examples":["h!ticketprompt", "h!ticketprompt @Moderators"]
+        },
+        {
+            "name":"CloseTicket",
+            "short": "close",
+            "tags":["All","Management"],
+            "description":"Closes and deletes a ticket channel.",
+            "parameters":["None"],
+            "usage":["h!closeticket","h!close"],
+            "examples":["h!closeticket","h!close"]
+        },
+        {
+            "name":"AddToTicket",
+            "short": "add",
+            "tags":["All","Management"],
+            "description":"Adds a new member to an existing ticket.",
+            "parameters":["Member"],
+            "usage":["h!addtoticket [member]","h!add [member]"],
+            "examples":["h!addtoticket @HappleMan","h!add @HappleMan"]
+        },
+        {
+            "name":"ToggleTicketPing",
+            "short": "tping",
+            "tags":["All","Management"],
+            "description":"Toggles whether moderators are pinged in new tickets.",
+            "parameters":["None"],
+            "usage":["h!toggleticketping","h!tping"],
+            "examples":["h!toggletping","h!tping"]
+        },
+        {
+            "name":"DiceRoll",
+            "short": "dice",
+            "tags":["All","Fun"],
+            "description":"Roll dice.",
+            "parameters":["Sides", "Amount"],
+            "usage":["h!diceroll [Sides] [Amount]","h!diceroll [Sides] [Amount]"],
+            "examples":["h!diceroll 6 1","h!dice 20 3"]
+        },
+        {
+            "name":"CoinFlip",
+            "short": "flip",
+            "tags":["All","Fun"],
+            "description":"Flip a coin.",
+            "parameters":["None"],
+            "usage":["h!coinflip","h!flip"],
+            "examples":["h!coinflip","h!flip"]
+        }
+    ],
+    "tags":[
+        "All",
+        "Basic",
+        "Moderation",
+        "Management",
+        "Fun"
+    ]
+}
