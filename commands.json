@@ -273,11 +273,29 @@
         {
             "name":"ServerStats",
             "short": "sstats",
-            "tags":["All","Management"],
-            "description":"Creates a category which shows member count, user count, and bot count.",
+            "tags":["All","Basic"],
+            "description":"View details about a server.",
             "parameters":["None"],
             "usage":["h!serverstats","h!sstats"],
             "examples":["h!serverstats","h!sstats"]
+        },
+        {
+            "name":"UserStats",
+            "short": "ustats",
+            "tags":["All","Basic"],
+            "description":"View details about a member of the server.",
+            "parameters":["Member"],
+            "usage":["h!userstats [member]","h!ustats [member]"],
+            "examples":["h!userstats @HappleMan","h!ustats @HappleMan"]
+        },
+        {
+            "name":"RoleStats",
+            "short": "rstats",
+            "tags":["All","Basic"],
+            "description":"View details about a role in the server.",
+            "parameters":["Role"],
+            "usage":["h!rolestats [member]","h!rstats [member]"],
+            "examples":["h!rolestats @HappleMan","h!rstats @HappleMan"]
         },
         {
             "name":"StartGiveaway",

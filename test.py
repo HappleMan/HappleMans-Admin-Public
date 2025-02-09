@@ -38,8 +38,8 @@ discordLink = "https://discord.gg/8GgyDPFdug"
 websiteLink = "https://happle.xyz/"
 patreonLink = "https://www.patreon.com/HappleCraft"
 
-botVersion = "public 1.0"
-botUpdate = " -A version of HappleMan's Admin is now open-source!"
+botVersion = "public 2.0"
+botUpdate = " -Removed server stats display to fix issues with ratelimiting.\n -Added informational commands about servers, roles, and members."
 
 voteUrl = f"https://top.gg/bot/{botUID}/vote"
 
@@ -54,7 +54,7 @@ def formEmbed(title, subtitle, body, files):
     toReturn = discord.Embed(color=colorTheme, title=subtitle, description=body)
     toReturn.set_author(name=title, icon_url=botIcon)
     if not files == False and not files is None:
-        toReturn.set_image(url=files)
+        toReturn.set_thumbnail(url=files)
     return toReturn
 
 
@@ -148,68 +148,6 @@ def getReason(table, start):
 def userFromMember(member):
     user = client.get_user(member.id)
     return user
-
-
-async def updateStats(guild):
-    memCount = getSetting(guild.id, "lastMemberCount")
-    if memCount != guild.member_count:
-        setSetting(guild.id, "lastMemberCount", guild.member_count)
-        channels = getSetting(guild.id, "stats")
-        if not "enabled" in channels:
-            channels = defaultSettings['stats']
-            channels['enabled'] = True
-        if channels['enabled']:
-            botPerms = hasPermission(guild.get_member(client.user.id), "administrator")
-            if botPerms:
-                async def privateChannel(chann):
-                    await chann.set_permissions(guild.default_role, connect= False, view_channel= True)
-                changed = False
-                category = False
-                bots = 0
-                for m in guild.members:
-                    if m.bot:
-                        bots += 1
-                if not "category" in channels or guild.get_channel(channels['category']) is None:
-                    cat = await guild.create_category_channel("📊Server Stats")
-                    channels['category'] = cat.id
-                    changed = True
-                    category = cat
-                    await cat.edit(position= 0)
-                else:
-                    category = guild.get_channel(channels['category'])
-                #Members
-                if "members" in channels and guild.get_channel(channels['members']):
-                    await guild.get_channel(channels['members']).edit(name = "Members: " + str(guild.member_count))
-                else:
-                    members = await guild.create_voice_channel("Members: " + str(guild.member_count))
-                    await privateChannel(members)
-                    await members.edit(category= category)
-                    channels['members'] = members.id
-                    changed = True
-                #Users
-                if "users" in channels and guild.get_channel(channels['users']):
-                    await guild.get_channel(channels['users']).edit(name = "Users: " + str(guild.member_count - bots))
-                else:
-                    members = await guild.create_voice_channel("Users: " + str(guild.member_count - bots))
-                    await privateChannel(members)
-                    await members.edit(category= category)
-                    channels['users'] = members.id
-                    changed = True
-                #Bots
-                if "bots" in channels and guild.get_channel(channels['bots']):
-                    await guild.get_channel(channels['bots']).edit(name = "Bots: " + str(bots))
-                else:
-                    members = await guild.create_voice_channel("Bots: " + str(bots))
-                    await privateChannel(members)
-                    await members.edit(category= category)
-                    channels['bots'] = members.id
-                    changed = True
-                if changed:
-                    setSetting(guild.id, "stats", channels)
-            else:
-                channels['enabled'] = False
-                setSetting(guild.id, "stats", channels)
-
 
 def getTimer(str):
     times = ['']
@@ -661,26 +599,6 @@ async def reactionRoles(member, guild, channel, message, content, single, slash)
             await message.add_reaction(emoji)
         return formEmbed("HappleMan's Admin", "Reaction Roles", "Reaction role message created.", False)
     return formEmbed("HappleMan's Admin", "Reaction Roles", "You do not have permission to create a reaction role message.", False)
-                    
-                
-
-async def serverStats(member):
-    if hasPermission(member, "manage_channels"):
-        stat = getSetting(member.guild.id, "stats")
-        status = "*(error)*"
-        if "enabled" in stat and stat['enabled']:
-            stat['enabled'] = False
-            status = "**Disabled**"
-        else:
-            if not "enabled" in stat:
-                stat = defaultSettings['stats']
-            stat['enabled'] = True
-            status = "**Enabled**"
-        setSetting(member.guild.id, "stats", stat)
-        if stat['enabled']:
-            await updateStats(member.guild)
-        return formEmbed("HappleMan's Admin", "Server Stats", f"Server Stats have been {status} in this server.", False)
-    return formEmbed("HappleMan's Admin", "Server Stats", "You do not have permission to use this command.", False)
             
 
 async def startGiveaway(member, channel, timer, prize): 
@@ -850,7 +768,26 @@ async def unLockdown(member, channel):
 def shoot(one, two):
     return formEmbed("HappleMan's Warfare", "Shooting 💥🔫", f"<@{two.id}> was shot by <@{one.id}>.", False)
 
+def serverStatsEmbed(guild):
+    chanCount = len(guild.channels)
+    vanity = guild.vanity_url
+    ts = round(guild.created_at.timestamp())
+    return formEmbed("HappleMan's Admin", guild.name, f"**Owner**: <@{guild.owner_id}>\n**Server ID**: `{guild.id}`\n**Members**: `{guild.member_count}`\n**Channels**: `{chanCount}`\n**h!Created**: <t:{ts}:R>\n**Boosts**: `{guild.premium_subscription_count}`\n**Vanity Invite URL**: {vanity}", guild.icon)
 
+def userStats(member):
+    img = member.guild_avatar
+    ts = round(member.created_at.timestamp())
+    bot = "No"
+    if member.bot:
+        bot = "Yes"
+    nitro = "No"
+    if not member.premium_since is None:
+        nitro = f"Since <t:{round(member.premium_since.timestamp())}:D>"
+    return formEmbed("HappleMan's Admin", member.display_name, f"**Mention String**: <@{member.id}>\n**User ID**: `{member.id}`\n**Username**: {member.name}\n**Created**: <t:{ts}:R>\n**Bot**: {bot}\n**Nitro**: {nitro}", member.display_avatar)
+
+def roleStats(role):
+    color = role.color
+    return formEmbed("HappleMan's Admin", role.name, f"**Mention String**: <@&{role.id}>\n**Role ID**: `{role.id}`\n**Rank**: `{role.position}`\n**Color**: `{color}`", role.display_icon)
 
 #Text Commands
 
@@ -975,10 +912,6 @@ async def on_message(message):
             await reactionRoles(member, message.guild, message.channel, message, message.content, False, False)
         
         
-        if matchCommand("serverstats","sstats", 1):
-            await message.channel.send(embed = await serverStats(member))
-        
-        
         if matchCommand("startgiveaway","giveaway", 3):
             timer = getTimer(command[1])
             reason = getReason(command, 3)
@@ -1037,6 +970,20 @@ async def on_message(message):
         if matchCommand("unlockdown","unlock", 1):
             await message.channel.send(embed = await unLockdown(member, message.channel))
         
+        if matchCommand("serverstats","sstats", 1):
+            await message.channel.send(embed = serverStatsEmbed(member.guild))
+        
+        
+        if matchCommand("userstats","ustats", 1):
+            mem = getMember(message)
+            if not mem is None:
+                await message.channel.send(embed = userStats(member))
+        
+        
+        if matchCommand("rolestats","rstats", 1):
+            rol = getRole(message)
+            if not rol is None:
+                await message.channel.send(embed = roleStats(rol))
         
         # if matchCommand("","", 1):
         #     await message.channel.send()
@@ -1047,8 +994,6 @@ async def on_message(message):
         
         await checkGiveaways()
         await syncCommands(message.guild)
-        if random.randint(1,5) == 3:
-            await updateStats(message.guild)
         
         if getSetting(message.guild.id, "blockLinks") and messageFilter.blockLinks(message.content):
                 await message.delete()
@@ -1200,10 +1145,6 @@ async def _toggleblockcaps(ctx):
 async def _toggleautopublish(ctx):
     await ctx.response.send_message(embed= toggleAutoPublish(ctx.user), ephemeral= False)
 
-@tree.command(name="serverstats", description="Creates a category which shows member count, user count, and bot count.")
-async def _serverstats(ctx):
-    await ctx.response.send_message(embed= await serverStats(ctx.user), ephemeral= False)
-
 @tree.command(name="startgiveaway", description="Starts a giveaway for a certain amount of time.")
 async def _startgiveaway(ctx, time: str, prize: str):
     await ctx.response.send_message(embed= await startGiveaway(ctx.user, ctx.channel, getTimer(time), prize), ephemeral= True)
@@ -1252,7 +1193,18 @@ async def _lockdown(ctx):
 @tree.command(name="unlockdown", description="Unlock a locked channel.")
 async def _unlockdown(ctx):
     await ctx.response.send_message(embed= await unLockdown(ctx.user, ctx.channel))
+
+@tree.command(name="serverstats", description="View details about a server.")
+async def _serverstat(ctx):
+    await ctx.response.send_message(embed= await serverStatsEmbed(ctx.channel.guild))
+
+@tree.command(name="userstats", description="View details about a member of the server.")
+async def _memberstat(ctx, member: discord.Member):
+    await ctx.response.send_message(embed= await userStats(member))
     
+@tree.command(name="rolestats", description="View details about a role in the server.")
+async def _rolestat(ctx, role: discord.Role):
+    await ctx.response.send_message(embed= await roleStats(role))
 
 #Events
 
@@ -1430,7 +1382,6 @@ async def leaveMessage(member):
 @client.event
 async def on_member_join(member):
     await joinMessage(member)
-    await updateStats(member.guild)
     autoRanks = getSetting(member.guild.id, "autoRoles")
     if len(autoRanks) >= 1:
         for i in autoRanks:
@@ -1441,6 +1392,5 @@ async def on_member_join(member):
 @client.event
 async def on_member_remove(member):
     await leaveMessage(member)
-    await updateStats(member.guild)
 
 client.run(os.getenv("TEST_BOT_TOKEN"))
