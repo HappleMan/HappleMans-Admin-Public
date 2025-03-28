@@ -38,8 +38,8 @@ discordLink = "https://discord.gg/8GgyDPFdug"
 websiteLink = "https://happle.xyz/"
 patreonLink = "https://www.patreon.com/HappleCraft"
 
-botVersion = "public 2.0"
-botUpdate = " -Removed server stats display to fix issues with ratelimiting.\n -Added informational commands about servers, roles, and members."
+botVersion = "public 2.2"
+botUpdate = " -Fixed an issue with infinite dice rolls.\n -Added some music safeguards.\n -Fixed issue preventing the bot from warning people."
 
 voteUrl = f"https://top.gg/bot/{botUID}/vote"
 
@@ -91,11 +91,11 @@ def getLogs(guild, search, stype, limit):
     return tab
     
     
-def hasPermission(member, permission): 
+def hasPermission(member, permission, permsOptional = False): 
     userPerms = getattr(member.guild_permissions, permission) or member.guild_permissions.administrator or member.id == ownerUID
     botUser = member.guild.get_member(client.user.id)
     botPerms = getattr(botUser.guild_permissions, "administrator") or botUser.guild_permissions.administrator
-    return userPerms and botPerms
+    return userPerms and (botPerms or permsOptional)
 
 def roleHasPermission(role, permission): 
     rolePerms = getattr(role.permissions, permission) or role.permissions.administrator
@@ -318,7 +318,7 @@ def modLogs(member, toBan): #settings for each type of log lookup
     
 
 async def warn(member, toBan, reason): 
-    if hasPermission(member, "kick_members") and (member.top_role > toBan.top_role or member.id == ownerUID):
+    if hasPermission(member, "kick_members", True) and (member.top_role > toBan.top_role or member.id == ownerUID):
         await privateMessage(toBan, formEmbed("HappleMan's Admin", "Warning", f"You have been warned in **{member.guild.name}** by <@{member.id}>: {reason}", False), True)
         updateLogs(member.guild.id, member.id, toBan.id, "Warned", reason)
         return formEmbed("HappleMan's Admin", "Warning", f"<@{member.id}> successfully warned <@{toBan.id}>: {reason}", False)
@@ -955,6 +955,14 @@ async def on_message(message):
                 dicen = int(command[1])
             if len(command) > 2 and command[2].isnumeric():
                 amount = int(command[2])
+            if dicen > 1000000:
+                dicen = 1000000
+            if amount > 20:
+                amount = 20
+            if dicen < 3:
+                dicen = 3
+            if amount < 1:
+                amount = 1
             await message.channel.send(dice(dicen, amount))
         
         if matchCommand("coinflip","flip", 1):
